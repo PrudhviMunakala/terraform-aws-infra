@@ -26,7 +26,7 @@ resource "aws_iam_role" "mysql" {
   )
 }
 
-resource "aws_iam_role_policy_attachment" "mysql" {
+/* resource "aws_iam_role_policy_attachment" "mysql" {
   role       = aws_iam_role.mysql.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
@@ -34,4 +34,4 @@ resource "aws_iam_role_policy_attachment" "mysql" {
 resource "aws_iam_instance_profile" "mysql" {
   name = "RoboshopDevMysqlRole"
   role = aws_iam_role.mysql.name
-}
+} */
