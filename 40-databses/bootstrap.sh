@@ -10,5 +10,7 @@ git clone https://github.com/PrudhviMunakala/ansible-roboshop-roles.git
 
 cd ansible-roboshop-roles
 
+git pull
+
 ansible-playbook -e component=$component roboshop.yaml
 
