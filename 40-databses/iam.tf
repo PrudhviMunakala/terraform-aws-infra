@@ -26,12 +26,18 @@ resource "aws_iam_role" "mysql" {
   )
 }
 
-/* resource "aws_iam_role_policy_attachment" "mysql" {
+resource "aws_iam_policy" "mysql" {
+  name        = "RoboshopDevMysqlPolicy"
+  description = "A policy for MySQL Ec2 instance"
+  policy      = templatefile("mysql-iam-policy.json")
+}
+
+resource "aws_iam_role_policy_attachment" "mysql" {
   role       = aws_iam_role.mysql.name
-  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+  policy_arn = aws_iam_policy.mysql.arn
 }
 
 resource "aws_iam_instance_profile" "mysql" {
-  name = "RoboshopDevMysqlRole"
+  name = "${var.project}-${var.environment}-mysql"
   role = aws_iam_role.mysql.name
-} */
+}
