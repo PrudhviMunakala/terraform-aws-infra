@@ -1,0 +1,7 @@
+bastion:
+- name: bastion_internet
+  description: Allow SSH access from the internet to bastion host
+  from_port: 22
+  to_port: 22
+  protocol: tcp
+  cidr_blocks: ["0.0.0.0/0"]
