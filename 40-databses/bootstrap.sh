@@ -2,7 +2,7 @@
 
 component=$1
 
-dnf install anisble -y
+dnf install ansible -y
 
 cd /home/ec2-user
 
