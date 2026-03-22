@@ -39,3 +39,45 @@ connection {
     ]
   }
 }
+
+resource "aws_instance" "redis" {
+  ami           = local.ami_id
+  instance_type = var.instance_type
+  subnet_id     = local.database_subnet_id
+  vpc_security_group_ids = [local.redis_sg_id]
+ #iam_instance_profile = aws_iam_instance_profile.redis.name
+
+  tags = merge(
+      
+    {
+        Name = "${var.project}-${var.environment}-redis"
+    },
+    local.common_tags
+  )
+}
+
+resource "terraform_data" "bootstrap" {
+  triggers_replace = [
+    aws_instance.redis.id
+   ]
+
+connection {
+      type        = "ssh"
+      user        = "ec2-user" # or "ubuntu", depending on the AMI
+      password    =  "DevOps321"
+      host        = aws_instance.redis.private_ip
+    }
+
+    provisioner "file" {
+    source      = "bootstrap.sh"
+    destination = "/tmp/bootstrap.sh"
+  }
+
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo chmod +x /tmp/bootstrap.sh",
+      "sudo sh /tmp/bootstrap.sh redis"
+    ]
+  }
+}

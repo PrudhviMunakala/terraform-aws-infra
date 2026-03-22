@@ -16,3 +16,13 @@ variable "instance_type" {
     default = "t3.micro"
   
 }
+
+variable "zone_id" {
+    default = "Z03858732HUVY50OKOZOA"
+  
+}
+
+variable "domain" {
+    default = "ptdevops.online"
+  
+}
