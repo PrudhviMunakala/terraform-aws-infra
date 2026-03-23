@@ -3,7 +3,7 @@ module "vpc" {
     #source = "../../terraform-vpc"
     project = var.project
     environment = var.environment
-    enable_peering = true
+    enable_peering = false
 
 
     
