@@ -35,7 +35,7 @@ connection {
   provisioner "remote-exec" {
     inline = [
       "sudo chmod +x /tmp/bootstrap.sh",
-      "sudo sh /tmp/bootstrap.sh catalogue dev"
+      "sudo sh /tmp/bootstrap.sh catalogue ${var.environment}"
     ]
   }
 }
