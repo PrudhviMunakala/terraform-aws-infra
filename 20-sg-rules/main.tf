@@ -61,3 +61,13 @@ resource "aws_security_group_rule" "rabbitmq_bastion" {
   source_security_group_id = local.bastion_sg_id
   security_group_id = local.rabbitmq_sg_id
 }
+
+
+resource "aws_security_group_rule" "backend-alb_bastion" {
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  source_security_group_id = local.bastion_sg_id
+  security_group_id = local.backend-alb_sg_id
+}
