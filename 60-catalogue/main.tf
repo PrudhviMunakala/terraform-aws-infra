@@ -123,9 +123,9 @@ resource "aws_autoscaling_group" "catalogue" {
         }
 
         
-        vpc_zone_identifier       = [local.private_subnet_ids]
+        vpc_zone_identifier  = [local.private_subnet_ids]
 
-        target_group_arns = aws_lb_target_group.catalogue.arn
+        target_group_arns = [aws_lb_target_group.catalogue.arn]
 
         instance_refresh {
             strategy = "Rolling"
