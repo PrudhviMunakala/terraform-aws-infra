@@ -77,13 +77,19 @@ resource "aws_lb_target_group" "catalogue" {
 }
 
 resource "aws_launch_template" "catalogue" {
-        name = "${var.project}-${var.environment}-catalogue"
-        image_id = aws_ami_from_instance.catalogue.id
-        # once autoscaling sees less traffic it will terminate the instance and when it sees more traffic it will launch the instance using this launch template and it will use the AMI which we created from the instance which we launched and configured as per our requirement.
-        instance_initiated_shutdown_behavior = "terminate"
-        instance_type = var.instance_type
-        vpc_security_group_ids = [local.catalogue_sg_id]
-        update_default_version = true
+  name = "${var.project}-${var.environment}-catalogue"
+  image_id = aws_ami_from_instance.catalogue.id
+
+  # once autoscaling sees less traffic, it will terminate the instance
+  instance_initiated_shutdown_behavior = "terminate"
+  instance_type = var.instance_type
+  vpc_security_group_ids = [local.catalogue_sg_id]
+
+  # each time we apply terraform this version will be updated as default
+  update_default_version = true
+  
+  # tags for instances created by launch template through autoscaling
+
         tag_specifications {
             resource_type = "instance"
         # tags for instance which will be launched using this launch template
