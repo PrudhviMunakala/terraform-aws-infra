@@ -16,10 +16,9 @@ resource "aws_instance" "catalogue" {
 
 resource "terraform_data" "catalogue" {
   triggers_replace = [
-    aws_instance.catalogue.id
-   ]
+    aws_instance.catalogue.id ]
 
-connection {
+    connection {
       type        = "ssh"
       user        = "ec2-user" # or "ubuntu", depending on the AMI
       password    =  "DevOps321"
@@ -32,11 +31,25 @@ connection {
   }
 
 
-  provisioner "remote-exec" {
+   provisioner "remote-exec" {
     inline = [
       "sudo chmod +x /tmp/bootstrap.sh",
       "sudo sh /tmp/bootstrap.sh catalogue ${var.environment}"
     ]
   }
+
+  
+}
+
+resource "aws_ec2_instance_state" "catalogue" {
+  instance_id = aws_instance.catalogue.id
+  state       = "stopped"
+  depends_on = [terraform_data.catalogue]
+}
+
+resource "aws_ami_from_instance" "catalogue" {
+  name               = "${var.project}-${var.environment}-catalogue-ami"
+  source_instance_id = aws_instance.catalogue.id
+  depends_on = [aws_ec2_instance_state.catalogue]
 }
 
