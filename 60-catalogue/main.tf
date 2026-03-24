@@ -78,7 +78,7 @@ resource "aws_lb_target_group" "catalogue" {
 
 resource "aws_launch_template" "catalogue" {
         name = "${var.project}-${var.environment}-catalogue"
-        image_id = "aws_ami_from_instance.catalogue.id"
+        image_id = aws_ami_from_instance.catalogue.id
         # once autoscaling sees less traffic it will terminate the instance and when it sees more traffic it will launch the instance using this launch template and it will use the AMI which we created from the instance which we launched and configured as per our requirement.
         instance_initiated_shutdown_behavior = "terminate"
         instance_type = "var.instance_type"
@@ -192,7 +192,7 @@ resource "terraform_data" "catalogue_terminate" {
   depends_on = [ aws_autoscaling_policy.catalogue ]
 
    provisioner "local-exec" {
-    command = "aws ec2 terminate-instances ${aws_instance.catalogue.id}"
+    command = "aws ec2 terminate-instances --instance-ids ${aws_instance.catalogue.id}"
   }
 
   
