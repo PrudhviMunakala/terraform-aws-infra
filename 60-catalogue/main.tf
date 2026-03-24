@@ -187,7 +187,7 @@ resource "aws_lb_listener_rule" "catalogue" {
   }
 }
 
-resource "terraform_data" "catalogue" {
+resource "terraform_data" "catalogue_terminate" {
   triggers_replace = [ aws_instance.catalogue.id ]
   depends_on = [ aws_autoscaling_policy.catalogue ]
 
