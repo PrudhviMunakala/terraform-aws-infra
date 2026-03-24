@@ -48,19 +48,19 @@ resource "aws_ec2_instance_state" "catalogue" {
 }
 
 resource "aws_ami_from_instance" "catalogue" {
-  name               = "${var.project}-${var.environment}-catalogue-ami"
+  name               = "${var.project}-${var.environment}-catalogue"
   source_instance_id = aws_instance.catalogue.id
   depends_on = [aws_ec2_instance_state.catalogue]
 }
 
 
 resource "aws_lb_target_group" "catalogue" {
-  name        = "${var.project}-${var.environment}-catalogue-tg"
+  name        = "${var.project}-${var.environment}-catalogue"
   port        = 8080
   protocol    = "HTTP"
-  target_type = "ip"
+  #target_type = "ip"
   vpc_id      = local.vpc_id
-  deregistration_delay = 30
+  deregistration_delay = 60
 
   health_check {
   healthy_threshold = 2
@@ -68,7 +68,7 @@ resource "aws_lb_target_group" "catalogue" {
   unhealthy_threshold = 2
   matcher = "200-299"
   path = "/health"
-  port = "8080"
+  port = 8080
   protocol = "HTTP"
   timeout = 5
 
@@ -138,7 +138,7 @@ resource "aws_autoscaling_group" "catalogue" {
             preferences {
             min_healthy_percentage = 50
             }
-            triggers = ["launch_template"]
+           # triggers = ["launch_template"]
         }
 
         dynamic "tag" {
