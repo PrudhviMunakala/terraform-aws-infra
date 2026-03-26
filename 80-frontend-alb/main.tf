@@ -24,14 +24,14 @@ resource "aws_lb_listener" "frontend_alb_listener" {
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = "arn:aws:iam::187416307283:server-certificate/test_cert_rab3wuqwgja25ct3n4jdj2tzu4"
+  certificate_arn   = local.frontend_alb_certificate_arn
   
    default_action {
     type = "fixed-response"
 
     fixed_response {
       content_type = "text/html"
-      message_body = "<h1> Welcome to Roboshop frontend ALB </h1>"
+      message_body = "<h1> Welcome to Roboshop HTTPS frontend ALB </h1>"
       status_code  = "200"
     }
   }
