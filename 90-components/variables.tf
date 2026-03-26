@@ -4,7 +4,7 @@ variable "components" {
             rule_priority = 10
         }
 
-        user = {
+        /* user = {
             rule_priority = 20
         }
 
@@ -18,7 +18,7 @@ variable "components" {
 
         shipping = {
             rule_priority = 50
-        }
+        } */
 
           frontend = {
             rule_priority = 10
