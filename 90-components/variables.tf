@@ -1,6 +1,5 @@
 variable "components" {
-    type = list
-    default ={
+    default = {
         catalogue = {
             rule_priority = 10
         }
