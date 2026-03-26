@@ -1,0 +1,50 @@
+resource "aws_lb" "frontend_alb" {
+  name               = "${var.project}-${var.environment}-frontend-alb"
+  internal           = true
+  load_balancer_type = "application"
+  security_groups    = [local.frontend_alb_sg_id]
+  subnets            = local.public_subnet_ids
+
+# given false for practice purpose 
+  enable_deletion_protection = false
+
+
+   tags = merge(
+      
+    {
+        Name = "${var.project}-${var.environment}-frontend-alb"
+    },
+    local.common_tags
+  )
+
+}
+
+resource "aws_lb_listener" "frontend_alb_listener" {
+  load_balancer_arn = aws_lb.frontend_alb.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = "arn:aws:iam::187416307283:server-certificate/test_cert_rab3wuqwgja25ct3n4jdj2tzu4"
+  
+   default_action {
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/html"
+      message_body = "<h1> Welcome to Roboshop frontend ALB </h1>"
+      status_code  = "200"
+    }
+  }
+}
+
+resource "aws_route53_record" "www" {
+  zone_id = var.zone_id
+  name    = "*.frontend-alb-${var.environment}.${var.domain}"
+  type    = "A"
+
+  alias {
+    name                   = aws_lb.frontend_alb.dns_name
+    zone_id                = aws_lb.frontend_alb.zone_id
+    evaluate_target_health = true
+  }
+}
