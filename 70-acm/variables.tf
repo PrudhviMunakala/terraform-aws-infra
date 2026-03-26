@@ -16,3 +16,8 @@ variable "environment" {
     default = "dev"
 
 }
+
+variable "zone_id" {
+    default = "Z03858732HUVY50OKOZOA"
+  
+}
